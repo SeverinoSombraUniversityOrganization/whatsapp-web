@@ -4,11 +4,11 @@
 
 ### 1. Criar a Rede Docker
 
-    - Antes de iniciar a aplicação, é necessário criar uma rede Docker. Execute o seguinte comando no terminal:
+   - Antes de iniciar a aplicação, é necessário criar uma rede Docker. Execute o seguinte comando no terminal:
 
-    ```bash
-    docker network create whatsapp-web-network
-    ```
+     ```bash
+     docker network create whatsapp-web-network
+     ```
 
 ### 2. Configurar o arquivo .env
 
@@ -46,4 +46,4 @@
      docker-compose down
      ```
 
-    Isso encerrará os contêineres e removerá a rede Docker criada.
+Isso encerrará os contêineres e removerá a rede Docker criada.

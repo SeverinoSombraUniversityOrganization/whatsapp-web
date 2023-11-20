@@ -1,10 +1,12 @@
 from flask import Flask
+from config.app_run_config import APP_RUN_CONFIG
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def welcome():
-    return 'Bem-vindo ao seu aplicativo Flask!'
+    return f'Bem-vindo ao seu aplicativo Flask!'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(**APP_RUN_CONFIG)

@@ -1,6 +1,6 @@
 from app import app
+from flask import render_template
 
 @app.route('/')
-def welcome():
-    return f'Bem-vindo ao seu aplicativo Flask!'
-
+def index():
+    return render_template('index.html')

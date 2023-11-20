@@ -1,13 +1,13 @@
 version: '3'
 
 services: 
-  questify-example-service:
+  api-provider-service:
     build:
       context: .
-      dockerfile: dockerfile
-    container_name: questify-example-service
+      dockerfile: dockerfile-api-provider
+    container_name: api-provider-service
     ports: 
-      - "${PORT}:${PORT}"
+      - "${API_PROVIDER_PORT}:${API_PROVIDER_PORT}"
     volumes:
       - node_modules:/usr/app/node_modules
       - ./app:/usr/app
@@ -15,11 +15,11 @@ services:
       - .env
     restart: always
     networks:
-      - questify-network
+      - whatsapp-web-network
 
 volumes:
   node_modules:
 
 networks:
-  questify-network:
+  whatsapp-web-network:
     external: true

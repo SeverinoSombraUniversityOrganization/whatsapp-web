@@ -2,7 +2,7 @@ FROM node:20.5.0-alpine
 
 WORKDIR /usr/app
 
-COPY ./app ./
+COPY ./api-provider ./
 
 RUN npm install
 

@@ -12,13 +12,3 @@ const registerClientWebhook = (req, res) => {
 module.exports = {
   registerClientWebhook,
 };
-
-
-
-
-
-
-
-
-
-

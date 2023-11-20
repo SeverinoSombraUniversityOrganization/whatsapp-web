@@ -1,5 +1,12 @@
 # WhatsApp Web Application
 
+## Pré-requisitos
+
+Antes de começar, certifique-se de que você tenha o Docker e o Docker Compose instalados em seu sistema. Se você ainda não os tem instalados, você pode baixá-los e instalá-los nos seguintes links:
+
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
 ## Rodando a Aplicação
 
 ### 1. Criar a Rede Docker

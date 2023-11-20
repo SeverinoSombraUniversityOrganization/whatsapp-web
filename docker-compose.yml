@@ -10,7 +10,7 @@ services:
       - "${API_PROVIDER_PORT}:${API_PROVIDER_PORT}"
     volumes:
       - node_modules:/usr/app/node_modules
-      - ./app:/usr/app
+      - ./api-provider:/usr/app
     env_file:
       - .env
     restart: always

@@ -2,13 +2,13 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "start": "node index.js",
-    "start:dev": "nodemon --quiet index.js",
+    "start": "node app.js",
+    "start:dev": "nodemon --quiet app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

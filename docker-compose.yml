@@ -1,11 +1,27 @@
 version: '3'
 
 services: 
-  api-provider-service:
+  whatsapp-web-service:
     build:
       context: .
-      dockerfile: dockerfile-api-provider
-    container_name: api-provider-service
+      dockerfile: Dockerfile-app
+    container_name: whatsapp-web-service-service
+    ports: 
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - node_modules:/usr/app/node_modules
+      - ./app:/usr/app
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - whatsapp-web-network
+
+  whatsapp-web-api-provider-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-api-provider
+    container_name: whatsapp-web-api-provider
     ports: 
       - "${API_PROVIDER_PORT}:${API_PROVIDER_PORT}"
     volumes:

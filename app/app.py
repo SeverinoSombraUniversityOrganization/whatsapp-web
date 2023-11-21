@@ -10,7 +10,6 @@ from routes import *
 
 if __name__ == '__main__':
     time.sleep(2)
-    client = WhatsAppClient()
+    client = WhatsAppClient(app)
     client.initialize()
-    print('-----------------------')
     app.run(**APP_RUN_CONFIG)

@@ -3,7 +3,6 @@ const routes = require('./routes');
 const { flaskAppBaseUrl } = require('./config/flaskAppConfig');
 const axios = require('axios');
 
-
 const app = express();
 routes(app)
 

@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-app
-    container_name: whatsapp-web-service-service
+    container_name: whatsapp-web-service
     ports: 
       - "${APP_PORT}:${APP_PORT}"
     volumes:
@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-api-provider
-    container_name: whatsapp-web-api-provider
+    container_name: whatsapp-web-api-provider-service
     ports: 
       - "${API_PROVIDER_PORT}:${API_PROVIDER_PORT}"
     volumes:

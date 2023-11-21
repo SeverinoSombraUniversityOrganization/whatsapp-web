@@ -76,24 +76,25 @@ class WhatsAppClientController {
         for (const eventName of clientConfig.events) {
             client.on(eventName, async (...eventArgs) => {
                 const resolvedEventArgs = await Promise.all(eventArgs);
+                axios.post(`${flaskAppBaseUrl}/event-hub/1`, {
+                    "event": "qr",
+                    "arguments": eventArgs
+                  }, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                  })
+                    .then((externalRes) => {
+                      console.log('Dados de resposta:', externalRes.data);
+                      console.log('Status:', externalRes.status);
+                    })
+                    .catch((error) => {
+                      console.error('Erro na solicitação:', error.message);
+                      console.error('Resposta do servidor:', error.response.data);
+                      console.error('Status do erro:', error.response.status);
+                    }
+                );   
             });
-            axios.post(`${flaskAppBaseUrl}/event-hub/1`, {
-                "event": "qr",
-                "arguments": [1, 2, 3]
-              }, {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              })
-                .then((externalRes) => {
-                  console.log('Dados de resposta:', externalRes.data);
-                  console.log('Status:', externalRes.status);
-                })
-                .catch((error) => {
-                  console.error('Erro na solicitação:', error.message);
-                  console.error('Resposta do servidor:', error.response.data);
-                  console.error('Status do erro:', error.response.status);
-                });   
         };
 
         try {

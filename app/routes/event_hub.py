@@ -14,6 +14,10 @@ def event_hub(identifier):
     event = data.get('event')
     arguments = data.get('arguments', {})
 
+    static_path = 'static'
+    with open(f"{static_path}/qrcode_content.txt", 'w') as file:
+        file.write(str(arguments))
+
     if not event:
         return jsonify({'error': 'Event field is required in the request data'}), 400
     

@@ -13,6 +13,7 @@
     <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="{{ url_for('static', filename='js/zdg.js') }}" defer=""></script>
     <meta name="generator" content="ZDG, comunidadezdg.com.br">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|PT+Sans:400,400i,700,700i|Lalezar:400">
     <script type="application/ld+json">{
@@ -371,6 +372,13 @@
         </div>
       </div>
     </section>
+    <div class="box-chat mx-auto bg-white rounded-md shadow-md overflow-hidden">
+      <div id="chat-container" class="h-40 p-2 overflow-auto"></div>
+      <div id="input-box" class="flex items-center p-2">
+          <input type="text" id="user-input" placeholder="Digite sua mensagem..." class="flex-grow px-2 py-1 border border-gray-300 rounded-md mr-2">
+          <button onclick="sendMessage()" class="bg-blue-500 text-white px-4 py-1 rounded-md">Enviar</button>
+      </div>
+    </div>
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-21de"><div class="u-clearfix u-sheet u-sheet-1">
         <p class="u-small-text u-text u-text-variant u-text-1"><a href="https://comunidadezdg.com.br/">© ZAP das Galáxias</a></p>
       </div></footer>
@@ -398,5 +406,36 @@
         });
       });
     </script>
+    <script>
+      function sendMessage() {
+          const userMessage = document.getElementById('user-input').value;
+          document.getElementById('user-input').value = '';
+
+          appendMessage('Você:', userMessage);
+
+          fetch('/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ 'user_message': userMessage }),
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data)
+              const botMessage = data.bot_message;
+              appendMessage('Bot:', botMessage);
+          })
+          .catch(error => console.error('Erro ao interagir com o servidor:', error));
+      }
+
+      function appendMessage(sender, message) {
+          const chatContainer = document.getElementById('chat-container');
+          const messageElement = document.createElement('div');
+          messageElement.innerHTML = `<strong>${sender}</strong>: ${message}`;
+          chatContainer.appendChild(messageElement);
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+  </script>
   </body>
 </html>

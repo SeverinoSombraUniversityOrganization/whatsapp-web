@@ -11,3 +11,9 @@ node_modules/
 
 # Python Environment
 venv
+
+# Python Byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

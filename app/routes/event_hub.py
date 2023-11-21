@@ -15,9 +15,6 @@ def event_hub(identifier):
     event_name = data.get('event')
     arguments = data.get('arguments', [])
 
-    with open(f"logs/whats-app-clients/{identifier}-logs-{event_name}.txt", 'a') as file:
-        file.write(str(arguments)  + '\n')
-
     if not event_name:
         return jsonify({'error': 'Event field is required in the request data'}), 400
     

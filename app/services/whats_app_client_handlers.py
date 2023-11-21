@@ -10,6 +10,12 @@ class WhatsAppClientHandler:
         return generate_and_save_qr(self.app, qr)
 
     def message(self, message, *args, **kwargs):
-        
-        message.reply('Calica')
-        message.reply('Bora vê')
+        message_content = message.body
+        menu_options = [
+            '1. Opção 1',
+            '2. Opção 2',
+            '3. Opção 3',
+        ]
+
+        menu_message = f'Escolha uma opção:\n{"\n".join(menu_options)}'
+        message.reply(menu_message)

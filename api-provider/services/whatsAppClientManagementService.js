@@ -62,13 +62,15 @@ class WhatsAppClientManagementService {
     
             for (const methodName in externalArgObject.executedMethods) {
               if (externalArgObject.executedMethods.hasOwnProperty(methodName)) {
-                const methodArgsArray = externalArgObject.executedMethods[methodName];
                 const localMethod = localArg[methodName];
+                const methodArgsArrays = externalArgObject.executedMethods[methodName];
     
-                if (typeof localMethod === 'function') {
-                  localMethod.call(localArg, ...methodArgsArray);
-                } else {
-                  throw new Error(`Method ${methodName} is not a valid function.`);
+                for (const methodArgsArray of methodArgsArrays) {
+                  if (typeof localMethod === 'function') {
+                    localMethod.call(localArg, ...methodArgsArray);
+                  } else {
+                    throw new Error(`Method ${methodName} is not a valid function.`);
+                  }
                 }
               }
             }

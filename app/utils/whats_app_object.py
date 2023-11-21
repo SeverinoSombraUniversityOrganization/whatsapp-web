@@ -18,10 +18,10 @@ class WhatsAppObject:
 
     def __getattr__(self, name):
         def wrapper(*args, **kwargs):
-            self.executed_methods[name] = args
+            if name not in self.executed_methods:
+                self.executed_methods[name] = []
 
-            with open(f"logs/{self.index}-executed-method-logs.txt", 'a') as file:
-                file.write(f'{name} : {args} : {self.executed_methods} \n')
+            self.executed_methods[name].append(args)
 
             if self.index not in self.argument_configs.keys():
                 self.argument_configs[self.index] = {

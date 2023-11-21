@@ -1,5 +1,8 @@
 const express = require('express');
 const routes = require('./routes'); 
+const { flaskAppBaseUrl } = require('./config/flaskAppConfig');
+const axios = require('axios');
+
 
 const app = express();
 routes(app)
@@ -14,3 +17,5 @@ app.listen(port, host, (err) => {
   }
   console.log(`Server is now listening on http://${host}:${port}`);
 });
+
+console.log(`${flaskAppBaseUrl}/event-hub/1`)

@@ -1,8 +1,16 @@
 // api-provider/services/whatsAppClientManagementService.js
+const { flaskAppBaseUrl } = require('../config/flaskAppConfig')
+
 class WhatsAppClientManagementService {
     constructor() {
-      this.clientWebhookConfig = {};
-      this.totalClients = 0;
+      this.clientWebhookConfig = {
+        1: {
+          url: `${flaskAppBaseUrl}/event-hub/1`,
+          events: ['qr', 'message'],
+          started: false,
+        }
+      };
+      this.totalClients = Object.keys(this.clientWebhookConfig).length;
     }
   
     /**
@@ -13,7 +21,6 @@ class WhatsAppClientManagementService {
      */
     registerClient(identifier, url, events) {
       this.clientWebhookConfig[identifier] = { url, events };
-      this.totalClients += 1;
     }
   
     /**

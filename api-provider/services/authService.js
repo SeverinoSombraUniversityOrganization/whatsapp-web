@@ -12,7 +12,7 @@ class AuthService {
     isValidAuthToken(authToken) {
       return authToken === this.AUTH_TOKEN;
     }
-  }
+}
   
-  module.exports = new AuthService();
+module.exports = new AuthService();
   

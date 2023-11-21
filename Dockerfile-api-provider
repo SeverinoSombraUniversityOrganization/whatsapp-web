@@ -1,10 +1,17 @@
-FROM node:20.5.0-alpine
+FROM node:20.5.0
 
 WORKDIR /usr/app
 
 COPY ./api-provider ./
 
+RUN apt-get update && apt-get install -y \
+    libgbm-dev \
+    libxss1 \
+    libasound2 \
+    libgtk-3-0 \
+    libnss3 \
+    chromium
+
 RUN npm install
 
 CMD ["npm", "run", "start:dev"]
-

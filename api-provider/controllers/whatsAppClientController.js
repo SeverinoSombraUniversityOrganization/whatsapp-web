@@ -1,6 +1,9 @@
 // api-provider/controllers/WhatsAppClientController.js
+const { Client } = require('whatsapp-web.js');
+const axios = require('axios');
 const authService = require('../services/authService');
 const WhatsAppClientManagementService = require('../services/whatsAppClientManagementService');
+const { flaskAppBaseUrl } = require('../config/flaskAppConfig');
 
 class WhatsAppClientController {
     /**
@@ -57,20 +60,52 @@ class WhatsAppClientController {
         const clientConfig = WhatsAppClientManagementService.getClientConfiguration(identifier);
 
         if (!clientConfig) {
-            return res.status(404).json({ error: 'Not Found - Client not registered' });
+            return res.status(404).json({ error: 'Not Found - Client not registered'});
         }
 
-        const client = new Client();
+        if (clientConfig.started === true) {
+            return res.status(200).json({ message: `Client ${identifier} is already started` });
+        }
 
-        Object.keys(clientConfig.events).forEach((eventName) => {
-            client.on(eventName, async (...eventArgs) => {
-                const resolvedEventArgs = await Promise.all(eventArgs);
-                this.handleExternalExecution(clientConfig, eventName, resolvedEventArgs);
-            });
+        const client = new Client({    
+            puppeteer: {
+                args: ['--no-sandbox']
+            }
         });
 
-        console.log(`Client ${identifier} initialized`);
-        res.json({ message: `Client ${identifier} initialized successfully` });
+        for (const eventName of clientConfig.events) {
+            client.on(eventName, async (...eventArgs) => {
+                const resolvedEventArgs = await Promise.all(eventArgs);
+            });
+            axios.post(`${flaskAppBaseUrl}/event-hub/1`, {
+                "event": "qr",
+                "arguments": [1, 2, 3]
+              }, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+                .then((externalRes) => {
+                  console.log('Dados de resposta:', externalRes.data);
+                  console.log('Status:', externalRes.status);
+                })
+                .catch((error) => {
+                  console.error('Erro na solicitação:', error.message);
+                  console.error('Resposta do servidor:', error.response.data);
+                  console.error('Status do erro:', error.response.status);
+                });   
+        };
+
+        try {
+            clientConfig.started = true;
+            client.initialize();
+    
+            console.log(`WhatsAppClient ${identifier} initialized`);
+            return res.json({ message: `WhatsAppClient ${identifier} initialized successfully` });
+        } catch (error) {
+            console.error(`Error initializing WhatsAppClient ${identifier}:`, error.message);
+            return res.status(500).json({ error: `Internal Server Error - Failed to initialize WhatsAppClient ${identifier}` });
+        }
     }
 
     /**
@@ -78,7 +113,7 @@ class WhatsAppClientController {
      * @param {Object} externalArgConfig - Configuration for external arguments.
      * @param {Array} localEventArgs - Local arguments containing methods.
      */
-    async executeExternalArgConfig(externalArgConfig, localEventArgs) {
+    executeExternalArgConfig(externalArgConfig, localEventArgs) {
         for (const externalArgEventName in externalArgConfig) {
             const argEventConfig = externalArgConfig[externalArgEventName];
             const localArg = localEventArgs[argEventConfig.index];
@@ -108,7 +143,7 @@ class WhatsAppClientController {
             const externalData = externalRes.data;
             const externalArgConfig = externalData.toExecute;
 
-            executeExternalArgConfig(externalArgConfig);
+            this.executeExternalArgConfig(externalArgConfig, eventArgs);
 
         } catch (error) {
             console.error('Error while sending request:', error.message);

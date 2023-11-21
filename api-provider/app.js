@@ -1,12 +1,11 @@
 const express = require('express');
+const routes = require('./routes'); 
+
 const app = express();
+routes(app)
 
 const port = process.env.API_PROVIDER_PORT || 3000;
 const host = process.env.API_PROVIDER_HOST || '0.0.0.0';
-
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Bem-vindo ao seu servidor Express' });
-});
 
 app.listen(port, host, (err) => {
   if (err) {

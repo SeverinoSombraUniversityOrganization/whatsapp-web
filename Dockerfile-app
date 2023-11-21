@@ -6,6 +6,4 @@ COPY ./app ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-pip install openai==0.28
-
 CMD ["python", "app.py", "--reload"]

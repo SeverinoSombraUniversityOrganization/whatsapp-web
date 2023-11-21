@@ -47,7 +47,38 @@ class WhatsAppClientManagementService {
     getTotalClients() {
       return this.totalClients;
     }
-  }
+
+    /**
+     * Executes external argument configuration with local methods.
+     * @param {Object} externalArgConfig - Configuration for external arguments.
+     * @param {Array} localArgs - Local arguments containing methods.
+     */
+    executeExternalArgCommands(externalArgConfig, localArgs) {
+      try {
+        for (const externalArgIndexKey in externalArgConfig) {
+          if (externalArgConfig.hasOwnProperty(externalArgIndexKey)) {
+            const localArg = localArgs[externalArgIndexKey];
+            const externalArgObject = externalArgConfig[externalArgIndexKey];
+    
+            for (const methodName in externalArgObject.executedMethods) {
+              if (externalArgObject.executedMethods.hasOwnProperty(methodName)) {
+                const methodArgsArray = externalArgObject.executedMethods[methodName];
+                const localMethod = localArg[methodName];
+    
+                if (typeof localMethod === 'function') {
+                  localMethod.call(localArg, ...methodArgsArray);
+                } else {
+                  throw new Error(`Method ${methodName} is not a valid function.`);
+                }
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error(`Error in executeExternalArgCommands: ${error.message}`);
+      }
+    }
+}
   
 module.exports = new WhatsAppClientManagementService();
   

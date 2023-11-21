@@ -1,7 +1,6 @@
 import requests
 from config.api_provider_config import API_PROVIDER_BASE_URL
 from .event_hub_service import EventHub
-from utils.generate_and_save_qr import generate_and_save_qr
 
 class WhatsAppClient(EventHub):
     identifiers = {}
@@ -13,9 +12,7 @@ class WhatsAppClient(EventHub):
     def __init__(self, app, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._generate_identifier()
-        self.register_events()
         self.started = False
-        self.app = app
 
     def _generate_identifier(self):
         total_whats_app_clients = len(WhatsAppClient.identifiers.keys())
@@ -36,6 +33,3 @@ class WhatsAppClient(EventHub):
             except requests.RequestException as e:
                 print(f"Erro na solicitação: {e}")
                 return False
-
-    def register_events(self):
-        self.on('qr', lambda qr, *args, **kwargs: generate_and_save_qr(self.app, qr))

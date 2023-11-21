@@ -16,5 +16,3 @@ app.listen(port, host, (err) => {
   }
   console.log(`Server is now listening on http://${host}:${port}`);
 });
-
-console.log(`${flaskAppBaseUrl}/event-hub/1`)
